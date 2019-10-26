@@ -19,10 +19,11 @@ public class HttpClientUtil {
 	public static final String REFERER = "https://accounts.pixiv.net/login?lang=zh&source=pc&view_type=page&ref=wwwtop_accounts_index";
 
 	private HttpClientUtil() {
-		// 以下三行是使用代理的方式，不使用代理就注释掉
+		// 以下三句是使用代理的方式，不使用代理就注释掉
 		HttpHost proxy = new HttpHost("127.0.0.1", 1080, "http");
-		RequestConfig defaultRequestConfig = RequestConfig.custom().setProxy(proxy).build();
-		httpClient = HttpClients.custom().setDefaultRequestConfig(defaultRequestConfig).build();
+		RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(5000).setConnectionRequestTimeout(5000)
+				.setSocketTimeout(5000).setProxy(proxy).build();
+		httpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
 		// 不使用代理就打开下一行
 //		httpClient = HttpClients.createDefault();
 	}
@@ -42,14 +43,14 @@ public class HttpClientUtil {
 	// 处理get请求
 	public CloseableHttpResponse doGet(String url) throws ClientProtocolException, IOException {
 		// 防止反爬虫
-		String[] headers = {"User-Agent", USER_AGENT, "Referer", REFERER};
+		String[] headers = { "User-Agent", USER_AGENT, "Referer", REFERER };
 		return doGet(url, headers);
 	}
-	
+
 	public CloseableHttpResponse doGet(String url, String[] headers) throws ClientProtocolException, IOException {
 		CloseableHttpResponse response = null;
 		HttpGet httpGet = new HttpGet(url);
-		for(int i = 0; i < headers.length; i += 2) {
+		for (int i = 0; i < headers.length; i += 2) {
 			httpGet.addHeader(headers[i], headers[i + 1]);
 		}
 		response = httpClient.execute(httpGet);

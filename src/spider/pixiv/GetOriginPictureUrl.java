@@ -8,7 +8,7 @@ import org.apache.http.util.EntityUtils;
 public class GetOriginPictureUrl {
 	
 	// 从HTML页面获取到原图链接
-	public String getPictureUrl(String pictureId) {
+	public String getPictureUrl(int pictureId) {
 		// 图片详情页链接，如https://www.pixiv.net/artworks/60095408
 		String getTimeUrl = "https://www.pixiv.net/artworks/" + pictureId;
 		// 原图链接，如https://i.pximg.net/img-original/img/2016/11/25/00/18/01/60095408_p0.jpg
